@@ -24,14 +24,9 @@ String dbPass = context.getInitParameter("dbPass");
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">메일링 리스트(Model 1 방법)</h1>
+        <h1 class="mt-5">메일링 리스트(Model 2 방법)</h1>
         
-<%
-EmailListDao dao = new EmailListDaoImpl(dbUser, dbPass);
-List<EmailVo> list = dao.getList();
 
-response.getWriter().println(list);
-%>
         <!-- 리스트 -->
         <!-- vo 객체의 getter를 이용, 리스트를 표시 -->
         <table class="table table-bordered mt-3">
@@ -43,18 +38,13 @@ response.getWriter().println(list);
                 </tr>
             </thead>
             <tbody>
-            <% Iterator<EmailVo> it = list.iterator(); 
-            while (it.hasNext()) {
-            	EmailVo vo = it.next();
-            %>
-                <tr>
-                    <td><%= vo.getLastName() %><%= vo.getFirstName() %></td>
-                    <td><%= vo.getEmail() %></td>
-                    <td><a class="btn btn-danger" href="delete.jsp?no=<%= vo.getNo() %>">삭제</a></td>
+			  <tr>
+                    <td></td>
+                    <td></td>
+                    <!-- < td><a class="btn btn-danger" href="delete.jsp?no=">삭제</a></td > -->
+                    <td><a class="btn btn-danger btn-sm" href="#" onclick="confirm_delete()">삭제</a></td>
                 </tr>
-                <%
-            }
-                %>
+
             </tbody>
         </table>
         <br />
