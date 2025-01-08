@@ -5,12 +5,13 @@
 <%@ page import="learnbyteaching.emaillist.dao.EmailListDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-ServletContext context = getServletContext();
-String dbUser = context.getInitParameter("dbUser");
-String dbPass = context.getInitParameter("dbPass");
-%>
 
+<%
+List<EmailVo> list = null;
+
+
+list = (List<EmailVo>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,15 +39,22 @@ String dbPass = context.getInitParameter("dbPass");
                 </tr>
             </thead>
             <tbody>
+             <%
+        	for (EmailVo vo: list) {
+       		 %>
 			  <tr>
-                    <td></td>
-                    <td></td>
+                    <td><%= vo.getLastName() %><%= vo.getFirstName() %></td>
+                    <td><%= vo.getEmail() %></td>
                     <!-- < td><a class="btn btn-danger" href="delete.jsp?no=">삭제</a></td > -->
-                    <td><a class="btn btn-danger btn-sm" href="#" onclick="confirm_delete()">삭제</a></td>
+                    <td><a class="btn btn-danger btn-sm" href="#" onclick="confirm_delete(<%= vo.getNo() %>)">삭제</a></td>
                 </tr>
+                <%
+                }
+                %>
 
             </tbody>
         </table>
+       
         <br />
 
         <p>
