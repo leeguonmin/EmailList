@@ -25,8 +25,19 @@ public class EmaillistServlet extends BaseServlet {
 		
 		// a=form -> form.jsp 로 요청되어 제어권 이전
 		if ("form".equals(actionName)) {
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/form.jsp");
+			rd.forward(req, resp);
+		} else if ("delete".equals(actionName)) {
+			EmailListDao dao =new EmailListDaoImpl(dbUser, dbPass);
+			Long no = Long.valueOf(req.getParameter("no"));
 			
-		} 
+			dao.delete(no);
+			
+			// 게시물 홈으로 Redirect 리다이렉트
+			resp.sendRedirect(req.getContextPath() + "/el");
+		}
+		
+		else {
    		
 		// Dao로부터 데이터 객체를 불러옴
 		EmailListDao dao = new EmailListDaoImpl(dbUser, dbPass);
@@ -39,7 +50,31 @@ public class EmaillistServlet extends BaseServlet {
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
 		rd.forward(req, resp);
 		
+		}
 		
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// String lastName = req.getParameter("last_name");
+		String lastName = req.getParameter("ln");
+		// String firstName = req.getParameter("first_name");
+		String firstName = req.getParameter("fn");
+		String email = req.getParameter("email");
+		
+		EmailListDao dao = new EmailListDaoImpl(dbUser, dbPass);
+		EmailVo vo = new EmailVo(lastName, firstName, email);
+		
+		boolean success = dao.insert(vo);
+		
+		if (success) {
+			System.out.println("INSERT SUCCESS!");
+		} else {
+			System.out.println("INSERT FAILED~");
+		}
+		
+		// 목록 페이지로 리다이렉트
+		resp.sendRedirect(req.getContextPath() + "/el");
+	}
+	
 }
